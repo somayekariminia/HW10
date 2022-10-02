@@ -1,4 +1,4 @@
 package ir.maktab.model.entity;
 
-public class LoafersShoes {
+public class LoafersShoes extends Shoes {
 }

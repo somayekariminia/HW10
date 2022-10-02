@@ -1,2 +1,4 @@
-package ir.maktab.model.entity;public class Book {
+package ir.maktab.model.entity;
+
+public class Book extends Reading{
 }
