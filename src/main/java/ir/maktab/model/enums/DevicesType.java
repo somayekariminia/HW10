@@ -1,2 +1,5 @@
-package ir.maktab.model.enums;public class DevicesType {
+package ir.maktab.model.enums;
+
+public enum DevicesType {
+    RADIO,TV
 }
