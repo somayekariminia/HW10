@@ -5,8 +5,8 @@ import ir.maktab.model.entity.Item;
 import java.util.List;
 
 public interface ShoppingBag<T extends Item>{
-    void addProductToBasket(T item);
-    void deleteProductOfBasket(T item);
-   List<T> printProducts();
+    void addItemToShoppingBag(T item);
+    void deleteItemOfShoppingBag(T item);
+   List<T> printAllItems();
    double printTotalPrice();
 }
