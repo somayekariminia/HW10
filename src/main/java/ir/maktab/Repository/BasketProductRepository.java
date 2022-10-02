@@ -1,4 +1,4 @@
-package ir.maktab.Repository.interfaces;
+package ir.maktab.Repository;
 
 import ir.maktab.Repository.interfaces.BasketProduct;
 
