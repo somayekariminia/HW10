@@ -1,5 +1,7 @@
 package ir.maktab.Repository.interfaces;
 
+import ir.maktab.Repository.interfaces.BasketProduct;
+
 import java.util.List;
 
 public class BasketProductRepository<T> implements BasketProduct<T> {
