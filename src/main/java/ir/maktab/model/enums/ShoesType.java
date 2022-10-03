@@ -1,2 +1,4 @@
-package ir.maktab.model.enums;public enum ShoesType {
+package ir.maktab.model.enums;
+
+public enum ShoesType {
 }

@@ -1,4 +1,4 @@
 package ir.maktab.model.enums;
 
-public enum DivecesType {
+public enum DevicesType {
 }

@@ -1,11 +1,11 @@
 package ir.maktab.Repository;
 
-        import ir.maktab.Repository.interfaces.ShoppingBag;
-        import ir.maktab.model.entity.Item;
+import ir.maktab.Repository.interfaces.ShoppingBag;
+import ir.maktab.model.entity.Item;
 
-        import java.util.List;
+import java.util.List;
 
-public class ShoppingBagRepository<T extends Item> implements ShoppingBag<T> {
+public class ShoppingBagRepository<T extends Item<U>> implements ShoppingBag<T> {
 
     @Override
     public void addItemToShoppingBag(T item) {
