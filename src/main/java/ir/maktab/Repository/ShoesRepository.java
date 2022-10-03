@@ -1,2 +1,4 @@
-package ir.maktab.Repository;public class ShoesRepository {
+package ir.maktab.Repository;
+
+public class ShoesRepository {
 }

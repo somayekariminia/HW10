@@ -1,4 +1,5 @@
 package ir.maktab.Repository;
 
-public class DeviceRepositotr {
+public class DeviceRepository {
+
 }
