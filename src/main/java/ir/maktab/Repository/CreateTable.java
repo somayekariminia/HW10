@@ -19,6 +19,8 @@ public class CreateTable {
         PreparedStatement preparedStatement=connection.prepareStatement("create table shoppingbag(id serial primary key ," +
                 "UserId int," +
                 "ItemId int," +
+                "countItem int," +
+                "type varchar(20),"+
                 "foreign key (UserId) references user(id)," +
                 "foreign key (ItemId) references item(id))");
         preparedStatement.executeUpdate();
@@ -26,11 +28,12 @@ public class CreateTable {
     void createTableItem() throws SQLException {
         Connection connection = GetConnection.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("create table item(id serial primary key," +
-                "name varchar(50)," +
-                "type varchar(50)," +
+                "nameItem varchar(50)," +
+                "typeItem varchar(50)," +
+                " color varchar(20)," +
+                "size int," +
                 "count int," +
-                "price decimal," +
-                "description varchar(50) )");
+                "price decimal)");
         preparedStatement.executeUpdate();
     }
 

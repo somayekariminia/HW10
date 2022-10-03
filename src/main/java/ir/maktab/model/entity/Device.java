@@ -9,4 +9,5 @@ import lombok.Setter;
 public class Device extends Item {
     private DevicesType devicesType;
     private int inch;
+    private String color;
 }
