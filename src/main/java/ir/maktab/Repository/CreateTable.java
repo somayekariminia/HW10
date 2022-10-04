@@ -19,7 +19,7 @@ public class CreateTable {
         PreparedStatement preparedStatement=connection.prepareStatement("create table shoppingbag(id serial primary key ," +
                 "UserId int," +
                 "ItemId int," +
-                "countItem int," +
+                "count int," +
                 "type varchar(20),"+
                 "foreign key (UserId) references user(id)," +
                 "foreign key (ItemId) references item(id))");
@@ -32,7 +32,7 @@ public class CreateTable {
                 "typeItem varchar(50)," +
                 " color varchar(20)," +
                 "size int," +
-                "count int," +
+                "countItem int," +
                 "price decimal)");
         preparedStatement.executeUpdate();
     }

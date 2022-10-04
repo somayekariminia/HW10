@@ -11,9 +11,6 @@ import java.sql.SQLException;
 
 public abstract class ItemRepositoryAbstract<T extends Item> implements ItemRepository<T> {
 
-    public void addItem(Item item) {
-    }
-
     @Override
     public void updateItems(String name, String type, String color, int count) throws SQLException {
         Connection connection = GetConnection.getConnection();
@@ -24,23 +21,6 @@ public abstract class ItemRepositoryAbstract<T extends Item> implements ItemRepo
         preparedStatement.setString(3, type);
         preparedStatement.setString(4, color);
         preparedStatement.executeUpdate();
-    }
-
-    @Override
-    public double getPrice(String name, String type, String color, int size) throws SQLException {
-        Connection connection = GetConnection.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("select * from item where nameItem=? and " +
-                " typeItem=? and color=? and sizeItem=? ");
-        preparedStatement.setString(1,name);
-        preparedStatement.setString(2,type);
-        preparedStatement.setString(3,color);
-        preparedStatement.setInt(4,size);
-        ResultSet resultSet =preparedStatement.executeQuery();
-        while (resultSet.next())
-        {
-            return resultSet.getDouble("price");
-        }
-        return 0;
     }
 
     @Override

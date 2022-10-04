@@ -1,4 +1,5 @@
 package ir.maktab.service;
 
-public interface ShoppingService {
+public interface shoppingBagService {
+
 }
