@@ -34,27 +34,30 @@ public class ShoppingBagRepository {
     }
 
 
-    public List<Item> printAllItems(int id) throws SQLException {
-//       Connection connection = GetConnection.getConnection();
-//       PreparedStatement preparedStatement = connection.prepareStatement("select * from shoppingbag inner join item on shoppingbag.itemId=item.id where userId=?");
-//       preparedStatement.setInt(1, id);
-//       ResultSet resultSet = preparedStatement.executeQuery();
-//       List<Item> itemList = new ArrayList<>();
-//       while (resultSet.next()) {
-//           if (resultSet.getString("type").equals("device")) {
-//               Device device = new Device(resultSet.getString("nameItem"), resultSet.getDouble("price"), resultSet.getInt("countItem"), resultSet.getString("typeItem"), resultSet.getString("color"), resultSet.getInt("size"), resultSet.getInt("count"));
-//               itemList.add(device);
-//           } else if (resultSet.getString("type").equals("reading")) {
-//                Reading reading = new Reading(resultSet.getString("nameItem"), resultSet.getDouble("price"), resultSet.getInt("countItem"), resultSet.getString("typeItem"), resultSet.getInt("size"), resultSet.getInt("count"));
-//                itemList.add(reading);
-//            } else if (resultSet.getString("type").equals("reading")) {
-//                Shoes shoes = new Shoes(resultSet.getString("nameItem"), resultSet.getDouble("price"), resultSet.getInt("count"), resultSet.getString("typeItem"), resultSet.getString("color"), resultSet.getInt("size"), resultSet.getInt("count"));
-//                itemList.add(shoes);
-//            }
-//        }
-//       return itemList;
-//       return null;
-//    }
+    public List<Item> selectAllItems(int id) throws SQLException {
+       Connection connection = GetConnection.getConnection();
+       PreparedStatement preparedStatement = connection.prepareStatement("select * from shoppingbag inner join item on shoppingbag.itemId=item.id where userId=?");
+       preparedStatement.setInt(1, id);
+       ResultSet resultSet = preparedStatement.executeQuery();
+       List<Item> itemList = new ArrayList<>();
+       while (resultSet.next()) {
+           if (resultSet.getString("type").equals("device")) {
+               PreparedStatement preparedStatement1=connection.prepareStatement("SELECT * from  shoppingbag inner join device on shoppingbag.itemId=device.id");
+               ResultSet resultSet = preparedStatement.executeQuery();
+               
+               Device device = new Device(resultSet.getString("nameItem"), resultSet.getDouble("price"), resultSet.getInt("countItem"), resultSet.getString("typeItem"), resultSet.getString("color"), resultSet.getInt("size"), resultSet.getInt("count"));
+               itemList.add(device);
+           } else if (resultSet.getString("type").equals("reading")) {
+                Reading reading = new Reading(resultSet.getString("nameItem"), resultSet.getDouble("price"), resultSet.getInt("countItem"), resultSet.getString("typeItem"), resultSet.getInt("size"), resultSet.getInt("count"));
+                itemList.add(reading);
+            } else if (resultSet.getString("type").equals("reading")) {
+                Shoes shoes = new Shoes(resultSet.getString("nameItem"), resultSet.getDouble("price"), resultSet.getInt("count"), resultSet.getString("typeItem"), resultSet.getString("color"), resultSet.getInt("size"), resultSet.getInt("count"));
+                itemList.add(shoes);
+            }
+        }
+       return itemList;
+       return null;
+    }
         return null;
     }
 }

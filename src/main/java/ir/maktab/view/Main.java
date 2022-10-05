@@ -13,7 +13,7 @@ public class Main {
 
 
     public static void main(String[] args) throws SQLException {
-//      CreateTable createTable=new CreateTable();
+        CreateTable createTable = new CreateTable();
 ////        createTable.createTableItem();
 //        TypeProduct typeProduct;
 //        DeviceRepository<Device> repository=new DeviceRepository<>();
@@ -21,6 +21,9 @@ public class Main {
 //        ArrayList<Item> list=new ArrayList<>();
 //        list=  repository.readingAll(item);
 //        System.out.println(list.get(0).toString());
+createTable.createTableReading();
+createTable.createTableShoes();
+createTable.createTableDevice();
 
-
+    }
 }

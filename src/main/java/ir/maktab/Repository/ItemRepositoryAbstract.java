@@ -48,7 +48,7 @@ public abstract class ItemRepositoryAbstract<T extends Item> implements ItemRepo
         preparedStatement.setString(2,item.getCode());
         ResultSet resultSet = preparedStatement.executeQuery(item.getCode());
         while (resultSet.next()) {
-         return resultSet.getString();
+         return resultSet.getInt("id");
         }
         return 0;
     }
