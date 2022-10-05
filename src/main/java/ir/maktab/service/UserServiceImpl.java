@@ -16,7 +16,6 @@ public class UserServiceImpl implements UserService {
         int id=userRepository.getIdByNameAndPassword(user.getName(), user.getPassword());
         basketRepository.createBasketForUser(id);
     }
-
     @Override
     public boolean loginUser(String name, String password) throws SQLException {
      if(userRepository.loginUser(name,password)==null)
