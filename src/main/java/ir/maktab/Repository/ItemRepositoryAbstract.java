@@ -42,10 +42,11 @@ public abstract class ItemRepositoryAbstract<T extends Item> implements ItemRepo
 
     public int getIdByItem(Item item) throws SQLException {
         Connection connection = GetConnection.getConnection();
-        String str = "select *" + " " + " from " + item.getItemType() + " where nameItem=? and typeItem=? and (codeItem=?)";
+        String str = "select *" + " " + " from " + item.getItemType() + " where nameItem=? and (codeItem=?)";
         PreparedStatement preparedStatement = connection.prepareStatement(str);
-        preparedStatement.setString(1,item.getCode());
-        ResultSet resultSet = preparedStatement.executeQuery();
+        preparedStatement.setString(1, item.getName());
+        preparedStatement.setString(2,item.getCode());
+        ResultSet resultSet = preparedStatement.executeQuery(item.getCode());
         while (resultSet.next()) {
          return resultSet.getString();
         }

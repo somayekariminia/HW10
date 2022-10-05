@@ -14,16 +14,14 @@ public class Device extends Item{
     private String color;
     private int countSelect;
 
-    public Device(String name, double price, int count, String typeProduct, String devicesType, String color, int inch) {
-        super(name, price, count, TypeProduct.valueOf(typeProduct));
+
+    public Device(String code,String name, double price, int count, String typeProduct, String devicesType, String color, int inch) {
+        super(code, name, price, count, TypeProduct.valueOf(typeProduct));
         this.devicesType =DevicesType.valueOf(devicesType);
         this.inch = inch;
         this.color = color;
         this.countSelect=countSelect;
     }
 
-    public Device(String name, double price, int count, String itemType) {
-        super(name, price, count, TypeProduct.valueOf(itemType));
-    }
 
 }

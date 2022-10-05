@@ -38,6 +38,7 @@ public class CreateTable {
     public void createTableDevice() throws SQLException {
         Connection connection = GetConnection.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("create table device(id serial primary key," +
+               "codeProduct varchar(20),"+
                 "nameItem varchar(50)," +
                 "typeItem varchar(50)," +
                 "color varchar(20)," +
@@ -51,6 +52,7 @@ public class CreateTable {
     public void createTableShoes() throws SQLException {
         Connection connection = GetConnection.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("create table shoes(id serial primary key," +
+               "codeProduct varchar(20),"+
                 "nameItem varchar(50)," +
                 "typeItem varchar(50)," +
                 "color varchar(20)," +
@@ -64,6 +66,7 @@ public class CreateTable {
     public void createTableReading() throws SQLException {
         Connection connection = GetConnection.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("create table reading(id serial primary key," +
+               "codeProduct varchar(20),"+
                 "nameItem varchar(50)," +
                 "typeItem varchar(50)," +
                 "numberPage int," +
