@@ -26,7 +26,7 @@ public class ShoppingBagImpl implements shoppingBagService {
         if (capacity > 5) {
             throw new NotFoundException("cont add to list shoppingBag that is full");
         } else {
-            int idItem = itemRepository.getId();
+            int idItem = itemRepository.getIdByItem(item);
             int idUser = userRepository.getIdByNameAndPassword(user.getName(), user.getPassword());
             shoppingBagRepository.addItemToShoppingBag(idUser, idItem, countSelect, String.valueOf(item.getItemType()));
             capacity++;
@@ -36,7 +36,7 @@ public class ShoppingBagImpl implements shoppingBagService {
     @Override
     public void deleteProductOfShoppingBag(Item item, User user) throws SQLException, NotFoundException {
 
-        int idItem = itemRepository.getId();
+        int idItem = itemRepository.getIdByItem(item);
         int idUser = userRepository.getIdByNameAndPassword(user.getName(), user.getPassword());
         if (idItem == 0) {
             throw new NotFoundException("there isnt product");
