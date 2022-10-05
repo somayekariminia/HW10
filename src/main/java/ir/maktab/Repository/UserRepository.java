@@ -9,7 +9,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserRepository {
-    void registerUser(User user) throws SQLException {
+    private static UserRepository instance=new UserRepository();
+    private  UserRepository(){}
+    public static UserRepository getInstance(){
+        return instance;
+    }
+   public void registerUser(User user) throws SQLException {
         Connection connection = GetConnection.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("insert into  user(username,password)values (?,?)");
         preparedStatement.setString(1, user.getName());

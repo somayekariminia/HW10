@@ -2,6 +2,7 @@ package ir.maktab.service;
 
 import ir.maktab.Repository.ShoppingBagRepository;
 import ir.maktab.Repository.UserRepository;
+import ir.maktab.Repository.BasketRepository;
 import ir.maktab.Repository.interfaces.ItemRepository;
 import ir.maktab.exeption.NotFoundException;
 import ir.maktab.model.entity.*;
@@ -20,7 +21,7 @@ public class ShoppingBagImpl implements shoppingBagService {
     ShoesServiceImpl shoesServiceImpl;
     DeviceServiceImpl deviceServiceImpl;
     ReadingServiceImpl readingServiceImpl;
-
+    BasketRepository basketRepository;
     @Override
     public void addProductToShoppingBag(Item item, User user, int countSelect) throws NotFoundException, SQLException {
         if (capacity > 5) {
@@ -32,7 +33,6 @@ public class ShoppingBagImpl implements shoppingBagService {
             capacity++;
         }
     }
-
     @Override
     public void deleteProductOfShoppingBag(Item item, User user) throws SQLException, NotFoundException {
 
@@ -48,7 +48,6 @@ public class ShoppingBagImpl implements shoppingBagService {
                 capacity--;
             }
         }
-
     }
 
     @Override
@@ -70,7 +69,6 @@ public class ShoppingBagImpl implements shoppingBagService {
         if (arrayList == null)
             throw new NotFoundException("list is empty");
         else
-
         {
             for (int i = 0; i < arrayList1.size(); i++) {
                 totalPrice += arrayList1.get(i).getPrice() * arrayList1.get(i).getNumberSelect();
@@ -81,18 +79,23 @@ public class ShoppingBagImpl implements shoppingBagService {
 
     @Override
     public void isConfirmShoppingBag(User user) throws SQLException, NotFoundException {
-        arrayList=printAllProductsShoppingBag(user);
-        for (int i = 0; i <arrayList.size() ; i++) {
-            int countTotal=arrayList.get(i).getCount();
-            int countSelect=arrayList.get(i).getNumberSelect();
-            countTotal=countTotal-countSelect;
-            String typeProduct=String.valueOf(arrayList.get(i).getItemType());
-            if(typeProduct.equals("device"))
-                deviceServiceImpl.updateStockItems((Device) arrayList.get(i),countTotal);
-           else if(typeProduct.equals("shoes"))
-               shoesServiceImpl.updateStockItems((Shoes) arrayList.get(i),countTotal);
-           else if (typeProduct.equals("reading"))
-               readingServiceImpl.updateStockItems((Reading) arrayList.get(i),countTotal);
-        }
+        int userId = userRepository.getIdByNameAndPassword(user.getName(), user.getPassword());
+        basketRepository.updateBasket(userId);
+        arrayList = printAllProductsShoppingBag(user);
+        if (arrayList == null)
+            throw new NotFoundException("list is empty");
+        else
+            for (int i = 0; i < arrayList.size(); i++) {
+                int countTotal = arrayList.get(i).getCount();
+                int countSelect = arrayList.get(i).getNumberSelect();
+                countTotal = countTotal - countSelect;
+                String typeProduct = String.valueOf(arrayList.get(i).getItemType());
+                if (typeProduct.equals("device"))
+                    deviceServiceImpl.updateStockItems((Device) arrayList.get(i), countTotal);
+                else if (typeProduct.equals("shoes"))
+                    shoesServiceImpl.updateStockItems((Shoes) arrayList.get(i), countTotal);
+                else if (typeProduct.equals("reading"))
+                    readingServiceImpl.updateStockItems((Reading) arrayList.get(i), countTotal);
+            }
     }
 }
