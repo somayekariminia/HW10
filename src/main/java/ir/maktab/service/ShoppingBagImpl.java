@@ -81,7 +81,6 @@ public class ShoppingBagImpl implements shoppingBagService {
 
     @Override
     public void isConfirmShoppingBag(User user) throws SQLException, NotFoundException {
-
         arrayList=printAllProductsShoppingBag(user);
         for (int i = 0; i <arrayList.size() ; i++) {
             int countTotal=arrayList.get(i).getCount();

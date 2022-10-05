@@ -1,10 +1,10 @@
 package ir.maktab.model.entity;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class ShoppingBag {
-    private Map<Item,Integer> mapShopping=new HashMap<>();
+    User user;
     private boolean isConfirm;
     private int capacity;
+    private List<Item> list;
 }

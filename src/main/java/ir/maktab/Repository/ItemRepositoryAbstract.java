@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ItemRepositoryAbstract<T extends Item> implements ItemRepository<T> {
@@ -24,9 +23,7 @@ public abstract class ItemRepositoryAbstract<T extends Item> implements ItemRepo
     }
 
     @Override
-    public List<T> getProductsOfTable() throws SQLException {
-        return null;
-    }
+    public abstract List<T> getProductsOfTable() throws SQLException;
 
     public int getIdByItem(T item) throws SQLException {
         Connection connection = GetConnection.getConnection();
