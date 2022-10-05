@@ -10,11 +10,11 @@ import lombok.Setter;
 public class Reading extends Item{
     private ReadingType readingType;
     private int countPage;
-    private int countSelect;
-    public Reading(String code,String name, double price, int count, String itemType,String readingType, int countPage,int countSelect) {
-        super(code,name, price, count, TypeProduct.valueOf(itemType));
+    public Reading(String code,String name, double price, int count, String itemType,int numberSelect,String readingType, int countPage) {
+        super(code,name, price, count, TypeProduct.valueOf(itemType),numberSelect);
         this.readingType = ReadingType.valueOf(readingType);
         this.countPage = countPage;
-        this.countSelect=countSelect;
+
     }
+
 }

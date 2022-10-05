@@ -11,13 +11,11 @@ public class Shoes extends Item{
     private ShoesType shoesType;
     private int size;
     private String color;
-    private int selectCount;
-    public Shoes(String code,String name, double price, int count, String typeProduct, String shoesType, String color, int size, int selectCount) {
-        super(code,name, price, count, TypeProduct.valueOf(typeProduct));
+    public Shoes(String code,String name, double price, int count, String typeProduct,int numberSelect, String shoesType, String color, int size) {
+        super(code,name, price, count, TypeProduct.valueOf(typeProduct),numberSelect);
         this.shoesType = ShoesType.valueOf(shoesType);
         this.color = color;
         this.size = size;
-        this.selectCount=selectCount;
     }
 
 }

@@ -2,15 +2,14 @@ package ir.maktab.Repository;
 
 import ir.maktab.Repository.cconnection.GetConnection;
 import ir.maktab.Repository.interfaces.ItemRepository;
-import ir.maktab.model.entity.Device;
 import ir.maktab.model.entity.Item;
-import ir.maktab.model.enums.TypeProduct;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class ItemRepositoryAbstract<T extends Item> implements ItemRepository<T> {
 
@@ -25,22 +24,11 @@ public abstract class ItemRepositoryAbstract<T extends Item> implements ItemRepo
     }
 
     @Override
-    public int getId(String name, String type, String color, int size) throws SQLException {
-        Connection connection = GetConnection.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("select * from item where nameItem=? and " +
-                " typeItem=? and color=? and sizeItem=? ");
-        preparedStatement.setString(1, name);
-        preparedStatement.setString(2, type);
-        preparedStatement.setString(3, color);
-        preparedStatement.setInt(4, size);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        while (resultSet.next()) {
-            return resultSet.getInt("id");
-        }
-        return 0;
+    public List<T> getProductsOfTable() throws SQLException {
+        return null;
     }
 
-    public int getIdByItem(Item item) throws SQLException {
+    public int getIdByItem(T item) throws SQLException {
         Connection connection = GetConnection.getConnection();
         String str = "select *" + " " + " from " + item.getItemType() + " where nameItem=? and (codeItem=?)";
         PreparedStatement preparedStatement = connection.prepareStatement(str);
