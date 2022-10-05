@@ -1,6 +1,7 @@
 package ir.maktab.model.entity;
 
 import ir.maktab.model.enums.ShoesType;
+import ir.maktab.model.enums.TypeProduct;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,13 +12,12 @@ public class Shoes extends Item{
     private int size;
     private String color;
     private int selectCount;
-    public Shoes(String name, double price, int count, String shoesType,  String color,int size,int selectCount) {
-        super(name, price, count);
+    public Shoes(String name, double price, int count, String typeProduct, String shoesType, String color, int size, int selectCount) {
+        super(name, price, count, TypeProduct.valueOf(typeProduct));
         this.shoesType = ShoesType.valueOf(shoesType);
         this.color = color;
         this.size = size;
         this.selectCount=selectCount;
     }
-
 
 }

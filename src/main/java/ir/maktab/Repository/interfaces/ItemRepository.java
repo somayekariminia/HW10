@@ -6,6 +6,6 @@ import java.sql.SQLException;
 
 public interface ItemRepository <T extends Item>{
 
-    void updateItems(String name, String type, String color, int count)throws SQLException;
+    void updateItems(int id,int count,T item)throws SQLException;
     int getId(String name, String type, String color, int size)  throws SQLException;
 }

@@ -7,35 +7,70 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class CreateTable {
-    void createTableUser() throws SQLException {
-        Connection connection= GetConnection.getConnection();
-        PreparedStatement preparedStatement=connection.prepareStatement("create table user (id serial primary key ," +
-                "username varchar(50)," +
+    public void createTableUser() throws SQLException {
+        Connection connection = GetConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("create table users (id serial primary key "+
+                ",username varchar(50)," +
                 "password varchar(50))");
         preparedStatement.executeUpdate();
     }
-    void createTableShoppingBag() throws SQLException {
-        Connection connection=GetConnection.getConnection();
-        PreparedStatement preparedStatement=connection.prepareStatement("create table shoppingbag(id serial primary key ," +
+
+    public void createTableShoppingBag() throws SQLException {
+        Connection connection = GetConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("create table shoppingbag(id serial primary key ," +
                 "UserId int," +
                 "ItemId int," +
-                "count int," +
-                "type varchar(20),"+
-                "foreign key (UserId) references user(id)," +
-                "foreign key (ItemId) references item(id))");
+                "numberSelect int," +
+                "typeProduct varchar(20)," +
+                "foreign key (UserId) references users(id))");
         preparedStatement.executeUpdate();
     }
-    void createTableItem() throws SQLException {
+
+    public void createTableBasket() throws SQLException {
         Connection connection = GetConnection.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("create table item(id serial primary key," +
+        PreparedStatement preparedStatement = connection.prepareStatement("create table basket(id serial primary key ," +
+                "UserId int," +
+                "iscofirm boolean," +
+                "foreign key (UserId) references users(id))");
+        preparedStatement.executeUpdate();
+    }
+
+    public void createTableDevice() throws SQLException {
+        Connection connection = GetConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("create table device(id serial primary key," +
                 "nameItem varchar(50)," +
                 "typeItem varchar(50)," +
-                " color varchar(20)," +
-                "size int," +
-                "countItem int," +
+                "color varchar(20)," +
+                "inch int," +
+                "numberAvailable int," +
                 "price decimal)");
         preparedStatement.executeUpdate();
-    }
 
     }
 
+    public void createTableShoes() throws SQLException {
+        Connection connection = GetConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("create table shoes(id serial primary key," +
+                "nameItem varchar(50)," +
+                "typeItem varchar(50)," +
+                "color varchar(20)," +
+                "sizeshoes int," +
+                "numberAvailable int," +
+                "price decimal)");
+        preparedStatement.executeUpdate();
+
+    }
+
+    public void createTableReading() throws SQLException {
+        Connection connection = GetConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("create table reading(id serial primary key," +
+                "nameItem varchar(50)," +
+                "typeItem varchar(50)," +
+                "numberPage int," +
+                "numberAvailable int," +
+                "price decimal)");
+        preparedStatement.executeUpdate();
+
+    }
+
+}

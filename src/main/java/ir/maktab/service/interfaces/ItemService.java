@@ -1,4 +1,4 @@
-package ir.maktab.service;
+package ir.maktab.service.interfaces;
 
 import ir.maktab.model.entity.Item;
 
