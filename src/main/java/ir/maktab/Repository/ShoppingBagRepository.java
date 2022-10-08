@@ -115,4 +115,9 @@ private Reading getReading() throws SQLException {
         }
         return shoes;
     }
+    public void updateCountInShopping(int userId,int itemId,int count){
+        Connection connection = GetConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("")
+
+    }
 }

@@ -33,7 +33,7 @@ public class MenuUser {
                            MenuShoppingBag.menuShoppingBag(user);
                         }
                     } catch (SQLException e) {
-                        throw new RuntimeException(e);
+                        System.err.println(e.getMessage());;
                     }
                     break;
                 case 2:
@@ -44,7 +44,7 @@ public class MenuUser {
                             MenuShoppingBag.menuShoppingBag(user1);
                         }
                     } catch (SQLException e) {
-                        System.out.println(e.getMessage());
+                        System.err.println(e.getMessage());
                     }
                     break;
                 case 3:

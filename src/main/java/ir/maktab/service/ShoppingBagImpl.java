@@ -3,7 +3,6 @@ package ir.maktab.service;
 import ir.maktab.Repository.BasketRepository;
 import ir.maktab.Repository.ShoppingBagRepository;
 import ir.maktab.Repository.UserRepository;
-import ir.maktab.Repository.interfaces.ItemRepository;
 import ir.maktab.exeption.NotFoundException;
 import ir.maktab.model.entity.*;
 import ir.maktab.service.interfaces.shoppingBagService;
@@ -38,9 +37,13 @@ public class ShoppingBagImpl implements shoppingBagService {
             throw new NotFoundException("cont add to list shoppingBag that is full");
         } else {
             int idItem = getIdProduct(typeItem, codeItem);
-            shoppingBagRepository.addItemToShoppingBag(idUser, idItem, countSelect, typeItem);
-            capacity++;
-            basketRepository.updateBasketForCapacity(idUser, capacity);
+            if (!shoppingBagRepository.isExist(idUser, idItem, typeItem)) {
+                shoppingBagRepository.addItemToShoppingBag(idUser, idItem, countSelect, typeItem);
+                capacity++;
+            } else
+
+
+                basketRepository.updateBasketForCapacity(idUser, capacity);
         }
     }
 
