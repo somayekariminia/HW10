@@ -11,10 +11,16 @@ import java.util.List;
 
 public class DeviceServiceImpl implements ItemService<Device> {
     private DeviceRepository deviceRepository=new DeviceRepository();
+    private static DeviceServiceImpl instance=new DeviceServiceImpl();
+    private DeviceServiceImpl(){}
+    public  static DeviceServiceImpl getInstance(){
+        return instance;
+    }
+
     ArrayList <Device>arrayList=new ArrayList<>();
     @Override
     public void updateStockItems(Device item, int count) throws SQLException {
-    int id=getIdItem(item);
+    int id=getIdItem(String.valueOf(item.getItemType()),item.getCode());
    deviceRepository.updateItems(id,count,item);
 
     }
@@ -28,8 +34,8 @@ public class DeviceServiceImpl implements ItemService<Device> {
     }
 
     @Override
-    public int getIdItem(Device item) throws SQLException {
-       return deviceRepository.getIdByItem(item);
+    public int getIdItem(String typeProduct,String codeProduct) throws SQLException {
+       return deviceRepository.getIdByItem(typeProduct,codeProduct);
     }
 
 }

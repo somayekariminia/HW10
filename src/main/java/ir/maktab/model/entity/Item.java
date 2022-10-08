@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Random;
-import java.util.UUID;
 
 @Setter
 @Getter
@@ -20,13 +19,13 @@ public class Item{
     private TypeProduct itemType;
     private  int numberSelect;
 
-  public Item(String code, String name, double price, int count, TypeProduct itemType,int numberSelect) {
+  public Item(String code, String name, double price, int count, TypeProduct itemType, int numberSelect) {
     this.code = code;
     this.name = name;
     this.price = price;
     this.count = count;
     this.itemType = itemType;
-    this.numberSelect=numberSelect;
+    this.numberSelect = numberSelect;
   }
 
   public Item(String code, String name, double price, int count) {
@@ -36,8 +35,28 @@ public class Item{
     this.count = count;
   }
 
+  public Item(String name, String itemType) {
+    this.name = name;
+    this.itemType = TypeProduct.valueOf(itemType);
+  }
 
-  public String getCode() {
-    return String.valueOf(itemType)+random.nextInt(100,1000);
+  @Override
+  public String toString() {
+    return
+                   " code:'" + code +
+                    " name:'" + name +
+                    " price:" + price +
+                    " count:" + count +
+                    " itemType: " + itemType +
+                    " numberSelect:" + numberSelect;
+  }
+  public  String print()
+  {
+    return
+            "code:'" + code +
+                    " name:'" + name +
+                    " price:" + price +
+                    " count:" + count ;
+
   }
 }

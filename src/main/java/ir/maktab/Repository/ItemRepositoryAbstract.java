@@ -15,7 +15,7 @@ public abstract class ItemRepositoryAbstract<T extends Item> implements ItemRepo
     @Override
     public void updateItems(int id, int count, T item) throws SQLException {
         Connection connection = GetConnection.getConnection();
-        String string = "update" + " " + item.getItemType() + " " + " set countitem=? " + " " + " where id=?";
+        String string = "update" + " " + item.getItemType() + " " + " set numberavailable=? " + " " + " where id=?";
         PreparedStatement preparedStatement = connection.prepareStatement(string);
         preparedStatement.setInt(1, count);
         preparedStatement.setInt(2, id);
@@ -25,16 +25,16 @@ public abstract class ItemRepositoryAbstract<T extends Item> implements ItemRepo
     @Override
     public abstract List<T> getProductsOfTable() throws SQLException;
 
-    public int getIdByItem(T item) throws SQLException {
+    public int getIdByItem(String typeProduct,String codeProduct) throws SQLException {
         Connection connection = GetConnection.getConnection();
-        String str = "select *" + " " + " from " + item.getItemType() + " where nameItem=? and (codeItem=?)";
+        String str = "select *" + " " + " from " + typeProduct + " where  (codeproduct=?)";
         PreparedStatement preparedStatement = connection.prepareStatement(str);
-        preparedStatement.setString(1, item.getName());
-        preparedStatement.setString(2,item.getCode());
-        ResultSet resultSet = preparedStatement.executeQuery(item.getCode());
+        preparedStatement.setString(1,codeProduct);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        int id=0;
         while (resultSet.next()) {
-         return resultSet.getInt("id");
+          id=resultSet.getInt("id");
         }
-        return 0;
+        return id;
     }
 }

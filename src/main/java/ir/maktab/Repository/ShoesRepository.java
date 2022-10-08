@@ -19,15 +19,13 @@ public class ShoesRepository<T extends Shoes> extends ItemRepositoryAbstract<Sho
         ResultSet resultSet1 = preparedStatement1.executeQuery();
         List<Shoes> list=new ArrayList<>();
         while (resultSet1.next()) {
-          Shoes  shoes = new Shoes(resultSet1.getString("codeProduct"),
-                    resultSet1.getString("nameItem"),
+          Shoes  shoes = new Shoes(resultSet1.getString("codeproduct"),
+                    resultSet1.getString("nameitem"),
                     resultSet1.getDouble("price"),
-                    resultSet1.getInt("numberAvailable"),
-                    resultSet1.getString("typeProduct"),
-                    resultSet1.getInt("numberSelect"),
-                    resultSet1.getString("typeItem"),
+                    resultSet1.getInt("numberavailable"),
+                    resultSet1.getString("typeitem"),
                     resultSet1.getString("color"),
-                    resultSet1.getInt("sizeShoes"));
+                    resultSet1.getInt("sizeshoes"));
           list.add(shoes);
         }
         return list;

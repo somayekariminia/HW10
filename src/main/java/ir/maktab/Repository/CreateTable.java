@@ -30,7 +30,8 @@ public class CreateTable {
         Connection connection = GetConnection.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("create table basket(id serial primary key ," +
                 "UserId int," +
-                "iscofirm boolean," +
+                "isconfirm boolean," +
+                "capacity int ,"+
                 "foreign key (UserId) references users(id))");
         preparedStatement.executeUpdate();
     }

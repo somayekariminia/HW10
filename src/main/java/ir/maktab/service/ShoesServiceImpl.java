@@ -12,9 +12,17 @@ import java.util.List;
 public class ShoesServiceImpl implements ItemService<Shoes> {
     ShoesRepository shoesRepository=new ShoesRepository();
     ArrayList<Shoes>list=new ArrayList<>();
+    private static ShoesServiceImpl instance = new ShoesServiceImpl();
+
+    private ShoesServiceImpl() {
+    }
+
+    public static ShoesServiceImpl getInstance() {
+        return instance;
+    }
     @Override
     public void updateStockItems(Shoes item, int count) throws SQLException {
-        int id =getIdItem(item);
+        int id=getIdItem(String.valueOf(item.getItemType()),item.getCode());
         shoesRepository.updateItems(id,count,item);
     }
 
@@ -27,8 +35,8 @@ public class ShoesServiceImpl implements ItemService<Shoes> {
     }
 
     @Override
-    public int getIdItem(Shoes item) throws SQLException {
-        return shoesRepository.getIdByItem(item);
+    public int getIdItem(String typeProduct,String codeProduct) throws SQLException {
+        return shoesRepository.getIdByItem(typeProduct,codeProduct);
     }
 
 }

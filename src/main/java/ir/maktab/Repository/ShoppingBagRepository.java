@@ -16,7 +16,7 @@ import java.util.List;
 public class ShoppingBagRepository {
     public void addItemToShoppingBag(int userId, int itemId, int count, String type) throws SQLException {
         Connection connection = GetConnection.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into shoppingbag(UserId,ItemId,count,typer) values (?,?,?,?)");
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into shoppingbag(Userid,Itemid,numberselect,typeproduct) values (?,?,?,?)");
         preparedStatement.setInt(1, userId);
         preparedStatement.setInt(2, itemId);
         preparedStatement.setInt(3, count);
@@ -25,14 +25,23 @@ public class ShoppingBagRepository {
     }
 
 
-    public void deleteItemOfShoppingBag(int userId, int itemId) throws SQLException {
+    public void deleteItemOfShoppingBag(int userId, int itemId,String typeProduct) throws SQLException {
         Connection connection = GetConnection.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("delete from shoppingbage where idItem=? and idItem=?");
+        PreparedStatement preparedStatement = connection.prepareStatement("delete from shoppingbag where userid=? and itemid=? and typeproduct=?");
         preparedStatement.setInt(1, userId);
         preparedStatement.setInt(2, itemId);
+        preparedStatement.setString(3,typeProduct);
         preparedStatement.executeUpdate();
     }
-
+public boolean isExist(int userId, int itemId, String typeProduct) throws SQLException {
+    Connection connection = GetConnection.getConnection();
+    PreparedStatement preparedStatement = connection.prepareStatement("select * from shoppingbag where userid=? and itemid=? and typeproduct=?");
+    preparedStatement.setInt(1, userId);
+    preparedStatement.setInt(2, itemId);
+    preparedStatement.setString(3, typeProduct);
+    ResultSet resultSet=preparedStatement.executeQuery();
+    return resultSet.next();
+}
 
     public List<Item> selectAllItems(int id) throws SQLException {
        Connection connection = GetConnection.getConnection();
@@ -65,11 +74,10 @@ public class ShoppingBagRepository {
                   resultSet1.getString("nameItem"),
                   resultSet1.getDouble("price"),
                   resultSet1.getInt("numberAvailable"),
-                  resultSet1.getString("typeProduct"),
                   resultSet1.getInt("numberSelect"),
                   resultSet1.getString("typeItem"),
-                  resultSet1.getString("color"),
-                  resultSet1.getInt("inch"));
+                  resultSet1.getInt("inch"),
+                  resultSet1.getString("color"));
   }
 return device;
 }
@@ -83,10 +91,9 @@ private Reading getReading() throws SQLException {
                 resultSet1.getString("nameItem"),
                 resultSet1.getDouble("price"),
                 resultSet1.getInt("numberAvailable"),
-                resultSet1.getString("typeProduct"),
-                resultSet1.getInt("numberPage"),
-                resultSet1.getString("typeItem"),
-                resultSet1.getInt("numberSelect"));
+                resultSet1.getInt("numberSelect"),
+                resultSet1.getString("typeitem"),
+                resultSet1.getInt("numberPage"));
     }
     return reading;
 }
@@ -101,7 +108,6 @@ private Reading getReading() throws SQLException {
                     resultSet1.getString("nameItem"),
                     resultSet1.getDouble("price"),
                     resultSet1.getInt("numberAvailable"),
-                    resultSet1.getString("typeProduct"),
                     resultSet1.getInt("numberSelect"),
                     resultSet1.getString("typeItem"),
                     resultSet1.getString("color"),

@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReadingRepository<T extends Reading> extends ItemRepositoryAbstract<Reading> {
+public class ReadingRepository extends ItemRepositoryAbstract<Reading> {
     @Override
     public List<Reading> getProductsOfTable() throws SQLException {
         Connection connection=GetConnection.getConnection();
@@ -19,14 +19,12 @@ public class ReadingRepository<T extends Reading> extends ItemRepositoryAbstract
         ResultSet resultSet1 = preparedStatement1.executeQuery();
         List<Reading> list=new ArrayList<>();
         while (resultSet1.next()) {
-        Reading reading = new Reading(resultSet1.getString("codeProduct"),
-                    resultSet1.getString("nameItem"),
+        Reading reading = new Reading(resultSet1.getString("codeproduct"),
+                    resultSet1.getString("nameitem"),
                     resultSet1.getDouble("price"),
-                    resultSet1.getInt("numberAvailable"),
-                    resultSet1.getString("typeProduct"),
-                    resultSet1.getInt("numberPage"),
-                    resultSet1.getString("typeItem"),
-                    resultSet1.getInt("numberSelect"));
+                    resultSet1.getInt("numberavailable"),
+                    resultSet1.getString("typeitem"),
+                    resultSet1.getInt("numberPage"));
         list.add(reading);
         }
         return list;

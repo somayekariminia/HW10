@@ -10,6 +10,14 @@ import java.sql.SQLException;
 public class UserServiceImpl implements UserService {
     UserRepository userRepository=UserRepository.getInstance();
     BasketRepository basketRepository=BasketRepository.getInstance();
+    private static UserServiceImpl instance = new UserServiceImpl();
+
+    private UserServiceImpl() {
+    }
+
+    public static UserServiceImpl getInstance() {
+        return instance;
+    }
     @Override
     public void registerUser(User user) throws SQLException {
         userRepository.registerUser(user);

@@ -9,5 +9,5 @@ import java.util.List;
 public interface ItemService<T extends Item> {
     void updateStockItems(T item,int count) throws SQLException;
     List<T>printAllItemsTables() throws SQLException, NotFoundException;
-    int getIdItem(T item) throws SQLException;
+    int getIdItem(String typeProduct,String codeProduct) throws SQLException;
 }

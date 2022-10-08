@@ -2,7 +2,6 @@ package ir.maktab.service;
 
 import ir.maktab.Repository.ReadingRepository;
 import ir.maktab.exeption.NotFoundException;
-import ir.maktab.model.entity.Device;
 import ir.maktab.model.entity.Reading;
 import ir.maktab.service.interfaces.ItemService;
 
@@ -11,13 +10,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReadingServiceImpl implements ItemService<Reading> {
-    ReadingRepository readingRepository=new ReadingRepository();
-    ArrayList<Reading>arrayList=new ArrayList<>();
+    private ReadingRepository readingRepository = new ReadingRepository();
+    private static ReadingServiceImpl instance = new ReadingServiceImpl();
+
+    private ReadingServiceImpl() {
+    }
+
+    public static ReadingServiceImpl getInstance() {
+        return instance;
+    }
+
+    ArrayList<Reading> arrayList = new ArrayList<>();
 
     @Override
     public void updateStockItems(Reading item, int count) throws SQLException {
-        int id=getIdItem(item);
-        readingRepository.updateItems(id,count,item);
+        int id=getIdItem(String.valueOf(item.getItemType()),item.getCode());
+        readingRepository.updateItems(id, count, item);
     }
 
     @Override
@@ -30,8 +38,8 @@ public class ReadingServiceImpl implements ItemService<Reading> {
     }
 
     @Override
-    public int getIdItem(Reading item) throws SQLException {
-        return readingRepository.getIdByItem(item);
+    public int getIdItem(String typeProduct,String codeProduct) throws SQLException {
+        return readingRepository.getIdByItem(typeProduct,codeProduct);
     }
 
 }

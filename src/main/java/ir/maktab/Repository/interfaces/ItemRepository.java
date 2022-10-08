@@ -9,5 +9,5 @@ public interface ItemRepository <T extends Item>{
 
     void updateItems(int id,int count,T item)throws SQLException;
      List<T> getProductsOfTable() throws SQLException;
-     int getIdByItem(T item) throws SQLException;
+     int getIdByItem(String typeProduct,String codeProduct) throws SQLException;
 }

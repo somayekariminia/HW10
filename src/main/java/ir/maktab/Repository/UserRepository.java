@@ -16,7 +16,7 @@ public class UserRepository {
     }
    public void registerUser(User user) throws SQLException {
         Connection connection = GetConnection.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into  user(username,password)values (?,?)");
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into  users(username,password)values (?,?)");
         preparedStatement.setString(1, user.getName());
         preparedStatement.setString(2, user.getPassword());
         preparedStatement.executeUpdate();
@@ -24,7 +24,7 @@ public class UserRepository {
 
     public User loginUser(String name, String password) throws SQLException {
         Connection connection = GetConnection.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("select*from user where name=? and password=?");
+        PreparedStatement preparedStatement = connection.prepareStatement("select*from users where username=? and password=?");
         preparedStatement.setString(1, name);
         preparedStatement.setString(2, password);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -36,7 +36,7 @@ public class UserRepository {
 
     public int getIdByNameAndPassword(String name, String password) throws SQLException {
         Connection connection = GetConnection.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("select*from user where name=? and password=?");
+        PreparedStatement preparedStatement = connection.prepareStatement("select*from users where username=? and password=?");
         preparedStatement.setString(1, name);
         preparedStatement.setString(2, password);
         ResultSet resultSet = preparedStatement.executeQuery();
