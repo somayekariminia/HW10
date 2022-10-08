@@ -5,7 +5,19 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class GetConnection {
-    public static Connection getConnection() throws SQLException {
-            return DriverManager.getConnection("jdbc:postgresql://localhost:5432/shopping","postgres","12345");
+
+    private static final String DB_URL = "jdbc:postgresql://localhost/postgres";
+    private static final String USER = "postgres";
+    private static final String PASS = "12345";
+
+    private static Connection connection;
+    public static Connection getConnection() {
+
+        try {
+            connection = DriverManager.getConnection(DB_URL, USER, PASS);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return connection;
     }
 }
