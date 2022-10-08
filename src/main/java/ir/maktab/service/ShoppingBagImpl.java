@@ -99,22 +99,25 @@ public class ShoppingBagImpl implements shoppingBagService {
     @Override
     public void isConfirmShoppingBag(User user) throws SQLException, NotFoundException {
         int userId = userRepository.getIdByNameAndPassword(user.getName(), user.getPassword());
-        basketRepository.updateBasketForIsConfirm(userId);
-        arrayList = printAllProductsShoppingBag(user);
-        if (arrayList == null)
-            throw new NotFoundException("list is empty");
-        else
-            for (int i = 0; i < arrayList.size(); i++) {
-                int countTotal = arrayList.get(i).getCount();
-                int countSelect = arrayList.get(i).getNumberSelect();
-                countTotal = countTotal - countSelect;
-                if (arrayList.get(i) instanceof Device)
-                    deviceServiceImpl.updateStockItems((Device) arrayList.get(i), countTotal);
-                else if (arrayList.get(i) instanceof Shoes)
-                    shoesServiceImpl.updateStockItems((Shoes) arrayList.get(i), countTotal);
-                else if (arrayList.get(i) instanceof Reading)
-                    readingServiceImpl.updateStockItems((Reading) arrayList.get(i), countTotal);
-            }
+        if(basketRepository.isConfirm(userId)) {
+            basketRepository.updateBasketForIsConfirm(userId);
+            arrayList = printAllProductsShoppingBag(user);
+            if (arrayList == null)
+                throw new NotFoundException("list is empty");
+            else
+                for (int i = 0; i < arrayList.size(); i++) {
+                    int countTotal = arrayList.get(i).getCount();
+                    int countSelect = arrayList.get(i).getNumberSelect();
+                    countTotal = countTotal - countSelect;
+                    if (arrayList.get(i) instanceof Device)
+                        deviceServiceImpl.updateStockItems((Device) arrayList.get(i), countTotal);
+                    else if (arrayList.get(i) instanceof Shoes)
+                        shoesServiceImpl.updateStockItems((Shoes) arrayList.get(i), countTotal);
+                    else if (arrayList.get(i) instanceof Reading)
+                        readingServiceImpl.updateStockItems((Reading) arrayList.get(i), countTotal);
+                }
+        }
+        else System.out.println("your shopping is confirmed");
     }
 
     public int getIdProduct(String typeItem, String codeItem) throws SQLException {
