@@ -2,7 +2,6 @@ package ir.maktab.view;
 
 import ir.maktab.exeption.NotFoundException;
 import ir.maktab.model.entity.*;
-import ir.maktab.model.enums.TypeProduct;
 import ir.maktab.service.ShoppingBagImpl;
 
 import java.sql.SQLException;
@@ -16,38 +15,30 @@ public class MenuShoppingBag {
 
     public static void menuShoppingBag(User user) {
         while(true) {
-            System.out.println("1: add\n2: delete\n3: print\n4: totalprice\n5: isconfirm\n6:exite");
-
+            System.out.println("1: add\n2: delete\n3: print\n4: totalprice\n5: isconfirm\n6:back");
             System.out.println("enter your choice");
             int choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                    scanner.nextLine();
-                    System.out.println("code product");
-                    String codeProduct = scanner.nextLine();
-                    System.out.println("typeProduct");
-                    String typeProduct = scanner.nextLine();
-                    System.out.println("How many Are you want Product?");
-                    int count = Integer.valueOf(scanner.nextLine());
-                    try {
-                        shoppingBag.addProductToShoppingBag(typeProduct, codeProduct, user, count);
-                    } catch (NotFoundException e) {
-                        System.err.println(e.getMessage());
-                    } catch (SQLException e) {
-                        System.err.println(e.getMessage());
-                    }
+                  MenuProduct.menuProduct(user);
                     break;
                 case 2:
+                    try {
+                        shoppingBag.printAllProductsShoppingBag(user);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    } catch (NotFoundException e) {
+                        System.out.println(e.getMessage());;
+                    }
                     scanner.nextLine();
-                    System.out.println("code product");
-                    String codeProduct1 = scanner.nextLine();
-                    System.out.println("typeProduct");
+                    System.out.println("code product want delete");
+                    String codeProduct1 = MenuProduct.inputCodeProduct();
+                    System.out.println("typeProduct want delete");
                     String typeProduct1 = scanner.nextLine();
                     try {
                         shoppingBag.deleteProductOfShoppingBag(typeProduct1, codeProduct1, user);
-                    } catch (SQLException e) {
-                        System.err.println(e.getMessage());
-                    } catch (NotFoundException e) {
+                        System.out.println(" this product : " +codeProduct1+"deleted of your shopping bag");
+                    } catch (SQLException | NotFoundException e) {
                         System.err.println(e.getMessage());
                     }
                     break;
@@ -55,37 +46,39 @@ public class MenuShoppingBag {
                     List<Item> list = new ArrayList<>();
                     try {
                         list = shoppingBag.printAllProductsShoppingBag(user);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    } catch (NotFoundException e) {
-                        throw new RuntimeException(e);
+                    } catch (SQLException | NotFoundException e) {
+                        System.out.println(e.getMessage());;
                     }
                     printItems(list);
                     break;
                 case 4:
                     try {
                         System.out.println(shoppingBag.printTotalPrice(user));
-                    } catch (SQLException e) {
-                        System.err.println(e.getMessage());
-                    } catch (NotFoundException e) {
+                    } catch (SQLException | NotFoundException e) {
                         System.err.println(e.getMessage());
                     }
                     break;
                 case 5:
-                    try {
-                        shoppingBag.isConfirmShoppingBag(user);
-                    } catch (SQLException e) {
-                        System.err.println(e.getMessage());
-                    } catch (NotFoundException e) {
-                        System.err.println(e.getMessage());
+                    System.out.println("are you isConfirm your shopping");
+                    String answer=scanner.nextLine();
+                    if(answer.equals("yes")) {
+                        try {
+                            shoppingBag.isConfirmShoppingBag(user);
+                            System.out.println("  your shopping register ");
+                        } catch (SQLException e) {
+                            System.err.println(e.getMessage());
+                        } catch (NotFoundException e) {
+                            System.err.println(e.getMessage());
+                        }
                     }
+                    else
+                        System.out.println("is not register yourShopping");
                     break;
                 case 6:
-                    System.exit(1);
+                   MenuUser.menuUser();
             }
         }
     }
-
     private static void printItems(List<Item> list) {
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i) instanceof Device) {
@@ -102,5 +95,4 @@ public class MenuShoppingBag {
             }
         }
     }
-
 }

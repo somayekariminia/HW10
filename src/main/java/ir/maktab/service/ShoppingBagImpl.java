@@ -15,8 +15,6 @@ import java.util.List;
 public class ShoppingBagImpl implements shoppingBagService {
     List<Item> arrayList = new ArrayList<>();
     int capacity;
-    boolean isConfirm;
-    ItemRepository itemRepository;
     UserRepository userRepository = UserRepository.getInstance();
     ShoppingBagRepository shoppingBagRepository = new ShoppingBagRepository();
     ShoesServiceImpl shoesServiceImpl = ShoesServiceImpl.getInstance();
@@ -36,7 +34,7 @@ public class ShoppingBagImpl implements shoppingBagService {
     public void addProductToShoppingBag(String typeItem, String codeItem, User user, int countSelect) throws NotFoundException, SQLException {
         int idUser = userRepository.getIdByNameAndPassword(user.getName(), user.getPassword());
         capacity = basketRepository.getCapacity(idUser);
-        if (capacity > 5) {
+        if (capacity >= 5) {
             throw new NotFoundException("cont add to list shoppingBag that is full");
         } else {
             int idItem = getIdProduct(typeItem, codeItem);
@@ -130,4 +128,5 @@ public class ShoppingBagImpl implements shoppingBagService {
             id = shoesServiceImpl.getIdItem(typeItem, codeItem);
         return id;
     }
+
 }

@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class GetConnection {
 
-    private static final String DB_URL = "jdbc:postgresql://localhost/postgres";
+    private static final String DB_URL = "jdbc:postgresql://localhost/shopping";
     private static final String USER = "postgres";
     private static final String PASS = "12345";
 
