@@ -1,6 +1,7 @@
 package ir.maktab.Repository;
 
 import ir.maktab.Repository.cconnection.GetConnection;
+import ir.maktab.model.entity.User;
 
 import javax.xml.transform.Result;
 import java.sql.Connection;
@@ -47,5 +48,13 @@ public class BasketRepository {
             return resultSet.getInt("capacity");
         }
         return 0;
+    }
+    public Boolean isConfirm(int userId) throws SQLException {
+        Connection connection = GetConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("select * from basket where userid=? and isconfirm=?");
+        preparedStatement.setInt(1,userId);
+        preparedStatement.setBoolean(2,false);
+        ResultSet resultSet=preparedStatement.executeQuery();
+        return resultSet.next();
     }
 }
