@@ -115,9 +115,30 @@ private Reading getReading() throws SQLException {
         }
         return shoes;
     }
-    public void updateCountInShopping(int userId,int itemId,int count){
-        Connection connection = GetConnection.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("")
 
+    public void updateCountInShopping(int userId, int itemId, int count, String typeProduct) throws SQLException {
+        Connection connection = GetConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("update shoppingbag set numberselect=? where userid=? and itemid=? and typeproduct=?");
+        preparedStatement.setInt(1, count);
+        preparedStatement.setInt(2, userId);
+        preparedStatement.setInt(3, itemId);
+        preparedStatement.setString(4, typeProduct);
+        preparedStatement.executeUpdate();
     }
+
+    public int getCount(int userId, int itemId, String typeProduct) throws SQLException {
+        Connection connection = GetConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("select numberselect from shoppingbag where userid=? and itemid=? and typeProduct=?");
+        preparedStatement.setInt(1, userId);
+        preparedStatement.setInt(2, itemId);
+        preparedStatement.setString(3, typeProduct);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        int count = 0;
+        while (resultSet.next()) {
+            count = resultSet.getInt("numberselect");
+        }
+        return count;
+    }
+
+
 }

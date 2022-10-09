@@ -54,7 +54,6 @@ public class MenuUser {
         }
     }
     private static User enterUser() {
-        scanner.nextLine();
         String name = inputUserName();
         String password = inputPassword();
         return new User(name, password);

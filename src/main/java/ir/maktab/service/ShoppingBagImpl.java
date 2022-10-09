@@ -40,13 +40,13 @@ public class ShoppingBagImpl implements shoppingBagService {
             if (!shoppingBagRepository.isExist(idUser, idItem, typeItem)) {
                 shoppingBagRepository.addItemToShoppingBag(idUser, idItem, countSelect, typeItem);
                 capacity++;
-            } else
-
-
+            } else {
+                int countNew = shoppingBagRepository.getCount(idUser, idItem, typeItem) + countSelect;
+                shoppingBagRepository.updateCountInShopping(idUser, idItem, countNew, typeItem);
+            }
                 basketRepository.updateBasketForCapacity(idUser, capacity);
         }
     }
-
     @Override
     public void deleteProductOfShoppingBag(String typeItem, String codeItem, User user) throws SQLException, NotFoundException {
 
@@ -110,12 +110,16 @@ public class ShoppingBagImpl implements shoppingBagService {
                     int countTotal = arrayList.get(i).getCount();
                     int countSelect = arrayList.get(i).getNumberSelect();
                     countTotal = countTotal - countSelect;
-                    if (arrayList.get(i) instanceof Device)
-                        deviceServiceImpl.updateStockItems((Device) arrayList.get(i), countTotal);
-                    else if (arrayList.get(i) instanceof Shoes)
-                        shoesServiceImpl.updateStockItems((Shoes) arrayList.get(i), countTotal);
-                    else if (arrayList.get(i) instanceof Reading)
-                        readingServiceImpl.updateStockItems((Reading) arrayList.get(i), countTotal);
+                    if (countTotal < 0)
+                        System.out.println("is not Stock");
+                    else {
+                        if (arrayList.get(i) instanceof Device)
+                            deviceServiceImpl.updateStockItems((Device) arrayList.get(i), countTotal);
+                        else if (arrayList.get(i) instanceof Shoes)
+                            shoesServiceImpl.updateStockItems((Shoes) arrayList.get(i), countTotal);
+                        else if (arrayList.get(i) instanceof Reading)
+                            readingServiceImpl.updateStockItems((Reading) arrayList.get(i), countTotal);
+                    }
                 }
         }
         else System.out.println("your shopping is confirmed");
