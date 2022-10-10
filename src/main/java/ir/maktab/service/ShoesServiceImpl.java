@@ -39,4 +39,9 @@ public class ShoesServiceImpl implements ItemService<Shoes> {
         return shoesRepository.getIdByItem(typeProduct,codeProduct);
     }
 
+    @Override
+    public int getNumberAvailableItem(String typeProduct, String codeProduct) throws SQLException {
+        return shoesRepository.getNumberAvailableByItem(typeProduct,codeProduct);
+    }
+
 }

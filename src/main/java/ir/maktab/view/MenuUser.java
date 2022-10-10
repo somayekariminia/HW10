@@ -28,8 +28,10 @@ public class MenuUser {
                     try {
                         if (!userService.loginUser(user.getName(), user.getPassword())) {
                             userService.registerUser(user);
+                            MenuProduct.printAllProducts();
                            MenuShoppingBag.menuShoppingBag(user);
                         } else {
+                            MenuProduct.printAllProducts();
                            MenuShoppingBag.menuShoppingBag(user);
                         }
                     } catch (SQLException e) {
@@ -41,6 +43,7 @@ public class MenuUser {
                     try {
                         if (userService.loginUser(user1.getName(), user1.getPassword()))
                         {
+                            MenuProduct.printAllProducts();
                             MenuShoppingBag.menuShoppingBag(user1);
                         }
                     } catch (SQLException e) {

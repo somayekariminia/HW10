@@ -33,18 +33,25 @@ public class ShoppingBagImpl implements shoppingBagService {
     public void addProductToShoppingBag(String typeItem, String codeItem, User user, int countSelect) throws NotFoundException, SQLException {
         int idUser = userRepository.getIdByNameAndPassword(user.getName(), user.getPassword());
         capacity = basketRepository.getCapacity(idUser);
+        int countProduct = 0;
         if (capacity >= 5) {
             throw new NotFoundException("cont add to list shoppingBag that is full");
         } else {
-            int idItem = getIdProduct(typeItem, codeItem);
-            if (!shoppingBagRepository.isExist(idUser, idItem, typeItem)) {
-                shoppingBagRepository.addItemToShoppingBag(idUser, idItem, countSelect, typeItem);
-                capacity++;
-            } else {
-                int countNew = shoppingBagRepository.getCount(idUser, idItem, typeItem) + countSelect;
-                shoppingBagRepository.updateCountInShopping(idUser, idItem, countNew, typeItem);
-            }
+            countProduct = getStockProducts(typeItem, codeItem);
+            if (countSelect < countProduct) {
+                int idItem = getIdProduct(typeItem, codeItem);
+                if (!shoppingBagRepository.isExist(idUser, idItem, typeItem)) {
+                    shoppingBagRepository.addItemToShoppingBag(idUser, idItem, countSelect, typeItem);
+                    capacity++;
+                } else {
+                    int countNew = shoppingBagRepository.getCount(idUser, idItem, typeItem) + countSelect;
+                    if (countNew < countProduct)
+                        shoppingBagRepository.updateCountInShopping(idUser, idItem, countNew, typeItem);
+                    else System.out.println("Not Enough available ");
+                }
                 basketRepository.updateBasketForCapacity(idUser, capacity);
+            } else
+                System.out.println("Not Enough available ");
         }
     }
     @Override
@@ -101,7 +108,6 @@ public class ShoppingBagImpl implements shoppingBagService {
     public void isConfirmShoppingBag(User user) throws SQLException, NotFoundException {
         int userId = userRepository.getIdByNameAndPassword(user.getName(), user.getPassword());
         if(basketRepository.isConfirm(userId)) {
-            basketRepository.updateBasketForIsConfirm(userId);
             arrayList = printAllProductsShoppingBag(user);
             if (arrayList == null)
                 throw new NotFoundException("list is empty");
@@ -110,16 +116,21 @@ public class ShoppingBagImpl implements shoppingBagService {
                     int countTotal = arrayList.get(i).getCount();
                     int countSelect = arrayList.get(i).getNumberSelect();
                     countTotal = countTotal - countSelect;
-                    if (countTotal < 0)
-                        System.out.println("is not Stock");
-                    else {
-                        if (arrayList.get(i) instanceof Device)
+                    if (arrayList.get(i) instanceof Device)
+                        if (countTotal < 0)
+                            System.out.println(((Device) arrayList.get(i)).getDevicesType() + " -> Not Enough available");
+                        else
                             deviceServiceImpl.updateStockItems((Device) arrayList.get(i), countTotal);
-                        else if (arrayList.get(i) instanceof Shoes)
+                    else if (arrayList.get(i) instanceof Shoes)
+                        if (countTotal < 0)
+                            System.out.println(((Shoes) arrayList.get(i)).getShoesType() + " -> Not Enough available");
+                        else
                             shoesServiceImpl.updateStockItems((Shoes) arrayList.get(i), countTotal);
-                        else if (arrayList.get(i) instanceof Reading)
+                    else if (arrayList.get(i) instanceof Reading)
+                        if (countTotal < 0)
+                            System.out.println(((Reading) arrayList.get(i)).getReadingType() + " -> Not Enough available");
+                        else
                             readingServiceImpl.updateStockItems((Reading) arrayList.get(i), countTotal);
-                    }
                 }
         }
         else System.out.println("your shopping is confirmed");
@@ -134,6 +145,16 @@ public class ShoppingBagImpl implements shoppingBagService {
         else if (typeItem.equals("shoes"))
             id = shoesServiceImpl.getIdItem(typeItem, codeItem);
         return id;
+    }
+
+    private int getStockProducts(String typeItem, String codeItem) throws SQLException {
+        if (typeItem.equals("device"))
+            return deviceServiceImpl.getNumberAvailableItem(typeItem, codeItem);
+        else if (typeItem.equals("reading"))
+            return readingServiceImpl.getNumberAvailableItem(typeItem, codeItem);
+        else if (typeItem.equals("shoes"))
+            return shoesServiceImpl.getNumberAvailableItem(typeItem, codeItem);
+        return 0;
     }
 
 }

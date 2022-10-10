@@ -27,7 +27,6 @@ public class ValidationInput {
             return input;
         else
             throw new ValidationExeption("codeProduct is not valid");
-
     }
 
 }

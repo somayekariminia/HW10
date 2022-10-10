@@ -97,7 +97,7 @@ public class MenuProduct {
             System.err.println(e.getMessage());
         }
     }
-    public void printAllProducts() {
+    public static void printAllProducts() {
         printDevices();
         printReadings();
         printShoes();

@@ -20,7 +20,7 @@ public class MenuShoppingBag {
             int choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                  MenuProduct.menuProduct(user);
+                    MenuProduct.menuProduct(user);
                     break;
                 case 2:
                     try {
@@ -28,7 +28,8 @@ public class MenuShoppingBag {
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     } catch (NotFoundException e) {
-                        System.out.println(e.getMessage());;
+                        System.out.println(e.getMessage());
+                        ;
                     }
                     scanner.nextLine();
                     System.out.println("code product want delete");
@@ -59,6 +60,7 @@ public class MenuShoppingBag {
                     }
                     break;
                 case 5:
+                    scanner.nextLine();
                     System.out.println("are you isConfirm your shopping");
                     String answer=scanner.nextLine();
                     if(answer.equals("yes")) {

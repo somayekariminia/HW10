@@ -38,4 +38,9 @@ public class DeviceServiceImpl implements ItemService<Device> {
        return deviceRepository.getIdByItem(typeProduct,codeProduct);
     }
 
+    @Override
+    public int getNumberAvailableItem(String typeProduct, String codeProduct) throws SQLException {
+        return deviceRepository.getNumberAvailableByItem(typeProduct,codeProduct);
+    }
+
 }

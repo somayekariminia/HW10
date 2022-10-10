@@ -42,4 +42,9 @@ public class ReadingServiceImpl implements ItemService<Reading> {
         return readingRepository.getIdByItem(typeProduct,codeProduct);
     }
 
+    @Override
+    public int getNumberAvailableItem(String typeProduct, String codeProduct) throws SQLException {
+        return readingRepository.getNumberAvailableByItem(typeProduct,codeProduct);
+    }
+
 }
