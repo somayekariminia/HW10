@@ -26,7 +26,7 @@ public class BasketRepository {
     public void updateBasketForIsConfirm(int userId) throws SQLException {
         Connection connection = GetConnection.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("update basket set isconfirm=?,capacity=? where userId=?");
-        preparedStatement.setBoolean(1, true);
+        preparedStatement.setBoolean(1, false);
         preparedStatement.setInt(2,0);
         preparedStatement.setInt(3, userId);
         preparedStatement.executeUpdate();

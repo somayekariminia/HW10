@@ -33,6 +33,12 @@ public class ShoppingBagRepository {
         preparedStatement.setString(3,typeProduct);
         preparedStatement.executeUpdate();
     }
+    public void emptyShoppingBag(int userId) throws SQLException {
+        Connection connection = GetConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("delete from shoppingbag where userid=? ");
+        preparedStatement.setInt(1, userId);
+        preparedStatement.executeUpdate();
+    }
 public boolean isExist(int userId, int itemId, String typeProduct) throws SQLException {
     Connection connection = GetConnection.getConnection();
     PreparedStatement preparedStatement = connection.prepareStatement("select * from shoppingbag where userid=? and itemid=? and typeproduct=?");
@@ -44,65 +50,70 @@ public boolean isExist(int userId, int itemId, String typeProduct) throws SQLExc
 }
 
     public List<Item> selectAllItems(int id) throws SQLException {
-       Connection connection = GetConnection.getConnection();
-       PreparedStatement preparedStatement = connection.prepareStatement("select * from shoppingbag where userId=?");
-       preparedStatement.setInt(1, id);
-       ResultSet resultSet = preparedStatement.executeQuery();
-       List<Item> itemList = new ArrayList<>();
-       while (resultSet.next()) {
-           if (resultSet.getString("typeproduct").equals("device")) {
-                 Device device=getDevice();
-                   itemList.add(device);
-               }
-            else if (resultSet.getString("typeproduct").equals("reading")) {
-                Reading reading=getReading();
+        Connection connection = GetConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("select * from shoppingbag where userId=?");
+        preparedStatement.setInt(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        List<Item> itemList = new ArrayList<>();
+        while (resultSet.next()) {
+            int itemId = resultSet.getInt("itemid");
+            if (resultSet.getString("typeproduct").equals("device")) {
+                Device device = getDevice(itemId);
+                itemList.add(device);
+            } else if (resultSet.getString("typeproduct").equals("reading")) {
+                Reading reading = getReading(itemId);
                 itemList.add(reading);
             } else if (resultSet.getString("typeproduct").equals("shoes")) {
-                Shoes shoes=getShoes();
+                Shoes shoes = getShoes(itemId);
                 itemList.add(shoes);
             }
         }
-       return itemList;
+        return itemList;
     }
-  private  Device getDevice() throws SQLException {
-    Connection connection=GetConnection.getConnection();
-      PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT * from  shoppingbag inner join device on shoppingbag.itemId=device.id");
-      ResultSet resultSet1 = preparedStatement1.executeQuery();
-      Device device=null;
-      while (resultSet1.next()) {
-          device = new Device(resultSet1.getString("codeProduct"),
-                  resultSet1.getString("nameItem"),
-                  resultSet1.getDouble("price"),
-                  resultSet1.getInt("numberAvailable"),
-                  resultSet1.getInt("numberSelect"),
-                  resultSet1.getString("typeItem"),
-                  resultSet1.getInt("inch"),
-                  resultSet1.getString("color"));
-  }
-return device;
-}
-private Reading getReading() throws SQLException {
-    Connection connection=GetConnection.getConnection();
-    PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT * from  shoppingbag inner join reading on shoppingbag.itemId=reading.id");
-    ResultSet resultSet1 = preparedStatement1.executeQuery();
-    Reading reading=null;
-    while (resultSet1.next()) {
-        reading = new Reading(resultSet1.getString("codeProduct"),
-                resultSet1.getString("nameItem"),
-                resultSet1.getDouble("price"),
-                resultSet1.getInt("numberAvailable"),
-                resultSet1.getInt("numberSelect"),
-                resultSet1.getString("typeitem"),
-                resultSet1.getInt("numberPage"));
-    }
-    return reading;
-}
 
-    private Shoes getShoes() throws SQLException {
-        Connection connection=GetConnection.getConnection();
-        PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT * from  shoppingbag inner join shoes on shoppingbag.itemId=shoes.id");
+    private Device getDevice(int itemId) throws SQLException {
+        Connection connection = GetConnection.getConnection();
+        PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT * from  shoppingbag inner join device on shoppingbag.itemId = device.id where device.id=? ");
+        preparedStatement1.setInt(1, itemId);
         ResultSet resultSet1 = preparedStatement1.executeQuery();
-      Shoes shoes=null;
+        Device device = null;
+        while (resultSet1.next()) {
+            device = new Device(resultSet1.getString("codeProduct"),
+                    resultSet1.getString("nameItem"),
+                    resultSet1.getDouble("price"),
+                    resultSet1.getInt("numberAvailable"),
+                    resultSet1.getInt("numberSelect"),
+                    resultSet1.getString("typeItem"),
+                    resultSet1.getInt("inch"),
+                    resultSet1.getString("color"));
+        }
+        return device;
+    }
+
+    private Reading getReading(int itemId) throws SQLException {
+        Connection connection = GetConnection.getConnection();
+        PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT * from  shoppingbag inner join reading on shoppingbag.itemId=reading.id where reading.id=?");
+        preparedStatement1.setInt(1, itemId);
+        ResultSet resultSet1 = preparedStatement1.executeQuery();
+        Reading reading = null;
+        while (resultSet1.next()) {
+            reading = new Reading(resultSet1.getString("codeProduct"),
+                    resultSet1.getString("nameItem"),
+                    resultSet1.getDouble("price"),
+                    resultSet1.getInt("numberAvailable"),
+                    resultSet1.getInt("numberSelect"),
+                    resultSet1.getString("typeitem"),
+                    resultSet1.getInt("numberPage"));
+        }
+        return reading;
+    }
+
+    private Shoes getShoes(int itemId) throws SQLException {
+        Connection connection = GetConnection.getConnection();
+        PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT * from  shoppingbag inner join shoes on shoppingbag.itemId=shoes.id where shoes.id=?");
+        preparedStatement1.setInt(1, itemId);
+        ResultSet resultSet1 = preparedStatement1.executeQuery();
+        Shoes shoes = null;
         while (resultSet1.next()) {
             shoes = new Shoes(resultSet1.getString("codeProduct"),
                     resultSet1.getString("nameItem"),

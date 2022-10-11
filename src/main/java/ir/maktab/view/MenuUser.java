@@ -17,42 +17,37 @@ public class MenuUser {
     private static ShoesServiceImpl shoesService = ShoesServiceImpl.getInstance();
     private static ReadingServiceImpl readingService = ReadingServiceImpl.getInstance();
     private static Scanner scanner = new Scanner(System.in);
+    private static int choice;
     public static void menuUser(){
 
         while (true) {
-            System.out.println("1: register\n2: login\n3:exite");
-            int choice=inputMenu();
+            System.out.println("1: register\n2: login\n3: exite");
+            choice = inputMenu();
             switch (choice) {
-                case 1:
+                case 1 -> {
                     User user = enterUser();
                     try {
                         if (!userService.loginUser(user.getName(), user.getPassword())) {
-                            userService.registerUser(user);
-                            MenuProduct.printAllProducts();
-                           MenuShoppingBag.menuShoppingBag(user);
+                            MenuShoppingBag.menuShoppingBag(user);
+                            menuThird(user);
                         } else {
-                            MenuProduct.printAllProducts();
-                           MenuShoppingBag.menuShoppingBag(user);
-                        }
-                    } catch (SQLException e) {
-                        System.err.println(e.getMessage());;
-                    }
-                    break;
-                case 2:
-                    User user1 = enterUser();
-                    try {
-                        if (userService.loginUser(user1.getName(), user1.getPassword()))
-                        {
-                            MenuProduct.printAllProducts();
-                            MenuShoppingBag.menuShoppingBag(user1);
+                            menuThird(user);
                         }
                     } catch (SQLException e) {
                         System.err.println(e.getMessage());
                     }
-                    break;
-                case 3:
-                    System.exit(1);
-                    break;
+                }
+                case 2 -> {
+                    User user1 = enterUser();
+                    try {
+                        if (userService.loginUser(user1.getName(), user1.getPassword())) {
+                            menuThird(user1);
+                        }
+                    } catch (SQLException e) {
+                        System.err.println(e.getMessage());
+                    }
+                }
+                case 3 -> System.exit(1);
             }
         }
     }
@@ -98,11 +93,29 @@ public class MenuUser {
             System.out.println("enter your choice  [1-9]");
             try {
                 choice = ValidationInput.validationInputToMenu(scanner.nextLine());
-                answer=false;
+                answer = false;
             } catch (ValidationExeption e) {
                 System.err.println(e.getMessage());
             }
         }
         return choice;
+    }
+
+    private static void menuThird(User user) {
+        while (true) {
+            System.out.println("1: seeAllProducts\n2: shopping\n3: back");
+            choice = inputMenu();
+            switch (choice) {
+                case 1 -> {
+                    System.out.println("... Products Avalaible In Stores ...");
+                    MenuProduct.printAllProducts();
+                }
+                case 2 -> {
+                    System.out.println("... Shopping ...");
+                    MenuShoppingBag.menuShoppingBag(user);
+                }
+                case 3 -> menuUser();
+            }
+        }
     }
 }

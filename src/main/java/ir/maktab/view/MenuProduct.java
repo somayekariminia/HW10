@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MenuProduct {
-    private static UserServiceImpl userService = UserServiceImpl.getInstance();
     private static DeviceServiceImpl deviceService = DeviceServiceImpl.getInstance();
     private static ShoesServiceImpl shoesService = ShoesServiceImpl.getInstance();
     private static ReadingServiceImpl readingService = ReadingServiceImpl.getInstance();
@@ -24,53 +23,44 @@ public class MenuProduct {
 
     public static void menuProduct(User user) {
         while (true) {
-            System.out.println("1: device\n2: reading\n3: shoes\n4: add Shopping\n5:back");
+            System.out.println("1: device\n2: reading\n3: shoes\n4: add Shopping\n5: Back To ShoppingCard");
             System.out.println(" enter your choice ");
             int choice = inputCount();
             switch (choice) {
-                case 1 -> {
-                    printDevices();
-                }
-                case 2 -> {
-                    printReadings();
-                }
-                case 3 -> {
-                    printShoes();
-                }
+                case 1 -> printDevices();
+                case 2 -> printReadings();
+                case 3 -> printShoes();
                 case 4->{
-                    scanner.nextLine();
                     String codeProduct = inputCodeProduct();
                     System.out.println("typeProduct");
                     String typeProduct = scanner.nextLine();
-                    System.err.println("How many Are you want Product?");
+                    System.out.println("How many Are you want Product?");
                     int count = inputCount();
                     try {
                         shoppingBag.addProductToShoppingBag(typeProduct,codeProduct,user,count);
                     } catch (NotFoundException | SQLException e) {
-                        System.out.println(e.getMessage());;
+                        System.out.println(e.getMessage());
                     }
                 }
-                case 5->{
-                    MenuShoppingBag.menuShoppingBag(user);
-                }
+                case 5-> MenuShoppingBag.menuShoppingBag(user);
             }
         }
     }
 
     private static void printReadings() {
-        List<Reading> arrayList = new ArrayList<>();
+        List<Reading> arrayList;
         try {
             arrayList = readingService.printAllItemsTables();
             for (Reading reading : arrayList) {
                 System.out.println(reading.print());
             }
         } catch (SQLException | NotFoundException e) {
-            System.err.println();;
+            System.err.println();
         }
     }
 
     private static void printShoes() {
-        List<Shoes> arrayList = new ArrayList<>();
+        List<Shoes> arrayList ;
         try {
             arrayList = shoesService.printAllItemsTables();
             for (Shoes shoes : arrayList) {
@@ -78,14 +68,13 @@ public class MenuProduct {
             }
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            ;
         } catch (NotFoundException e) {
             System.err.println(e.getMessage());
         }
     }
 
     private static void printDevices() {
-        List<Device> arrayList = new ArrayList<>();
+        List<Device> arrayList ;
         try {
             arrayList = deviceService.printAllItemsTables();
             for (Device device : arrayList) {
@@ -106,7 +95,7 @@ public class MenuProduct {
         boolean answer=true;
         String codeProduct = null;
         while (answer){
-            System.out.println("code product");
+            System.out.println("Enter code product");
             try {
                 codeProduct = ValidationInput.validationCodeProduct(scanner.nextLine());
                 answer=false;

@@ -15,22 +15,22 @@ public class MenuShoppingBag {
 
     public static void menuShoppingBag(User user) {
         while(true) {
-            System.out.println("1: add\n2: delete\n3: print\n4: totalprice\n5: isconfirm\n6:back");
+            System.out.println("1: add\n2: delete\n3: print\n4: totalprice\n5: isconfirm\n6: back To Menu First");
             System.out.println("enter your choice");
-            int choice = scanner.nextInt();
+            int choice = MenuProduct.inputCount();
             switch (choice) {
                 case 1:
                     MenuProduct.menuProduct(user);
                     break;
                 case 2:
+                    List<Item> list = new ArrayList<>();
                     try {
-                        shoppingBag.printAllProductsShoppingBag(user);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    } catch (NotFoundException e) {
+                        list = shoppingBag.printAllProductsShoppingBag(user);
+                    } catch (SQLException | NotFoundException e) {
                         System.out.println(e.getMessage());
-                        ;
                     }
+                    printItems(list);
+
                     scanner.nextLine();
                     System.out.println("code product want delete");
                     String codeProduct1 = MenuProduct.inputCodeProduct();
@@ -38,19 +38,19 @@ public class MenuShoppingBag {
                     String typeProduct1 = scanner.nextLine();
                     try {
                         shoppingBag.deleteProductOfShoppingBag(typeProduct1, codeProduct1, user);
-                        System.out.println(" this product : " +codeProduct1+"deleted of your shopping bag");
+                        System.out.println(" this product : " + codeProduct1 + " " + "Deleted of your ShoppingCard");
                     } catch (SQLException | NotFoundException e) {
                         System.err.println(e.getMessage());
                     }
                     break;
                 case 3:
-                    List<Item> list = new ArrayList<>();
+                    List<Item> list1 = new ArrayList<>();
                     try {
-                        list = shoppingBag.printAllProductsShoppingBag(user);
+                        list1 = shoppingBag.printAllProductsShoppingBag(user);
                     } catch (SQLException | NotFoundException e) {
-                        System.out.println(e.getMessage());;
+                        System.out.println(e.getMessage());
                     }
-                    printItems(list);
+                    printItems(list1);
                     break;
                 case 4:
                     try {
@@ -65,11 +65,12 @@ public class MenuShoppingBag {
                     String answer=scanner.nextLine();
                     if(answer.equals("yes")) {
                         try {
-                            shoppingBag.isConfirmShoppingBag(user);
-                            System.out.println("  your shopping register ");
-                        } catch (SQLException e) {
-                            System.err.println(e.getMessage());
-                        } catch (NotFoundException e) {
+                            if (shoppingBag.isConfirmShoppingBag(user))
+                                System.out.println("  your shopping register ");
+                            else
+                                System.out.println("your shopping doesnot Isconfirm");
+
+                        } catch (SQLException | NotFoundException e) {
                             System.err.println(e.getMessage());
                         }
                     }
@@ -82,18 +83,16 @@ public class MenuShoppingBag {
         }
     }
     private static void printItems(List<Item> list) {
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i) instanceof Device) {
-                Device device = (Device) list.get(i);
-                System.out.println(device.toString());
-            }
-            else if (list.get(i) instanceof Reading) {
-                Reading reading = (Reading) list.get(i);
-                System.out.println(reading.toString());
-            }
-            else if (list.get(i) instanceof Shoes) {
-                Shoes shoes = (Shoes) list.get(i);
-                System.out.println(shoes.toString());
+        for (Item item : list) {
+            if (item instanceof Device) {
+                Device device = (Device) item;
+                System.out.println(device);
+            } else if (item instanceof Reading) {
+                Reading reading = (Reading) item;
+                System.out.println(reading);
+            } else if (item instanceof Shoes) {
+                Shoes shoes = (Shoes) item;
+                System.out.println(shoes);
             }
         }
     }

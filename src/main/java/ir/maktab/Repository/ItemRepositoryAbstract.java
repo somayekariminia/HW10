@@ -39,7 +39,7 @@ public abstract class ItemRepositoryAbstract<T extends Item> implements ItemRepo
     }
     public int getNumberAvailableByItem(String typeProduct,String codeProduct) throws SQLException {
         Connection connection = GetConnection.getConnection();
-        String str = "select *" + " " + " from " + typeProduct + " where  (codeproduct=?)";
+        String str = "select *" + " " + " from " + typeProduct + " where  codeproduct=? ";
         PreparedStatement preparedStatement = connection.prepareStatement(str);
         preparedStatement.setString(1,codeProduct);
         ResultSet resultSet = preparedStatement.executeQuery();

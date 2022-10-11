@@ -33,19 +33,19 @@ public class ShoppingBagImpl implements shoppingBagService {
     public void addProductToShoppingBag(String typeItem, String codeItem, User user, int countSelect) throws NotFoundException, SQLException {
         int idUser = userRepository.getIdByNameAndPassword(user.getName(), user.getPassword());
         capacity = basketRepository.getCapacity(idUser);
-        int countProduct = 0;
+        int countProduct;
         if (capacity >= 5) {
             throw new NotFoundException("cont add to list shoppingBag that is full");
         } else {
             countProduct = getStockProducts(typeItem, codeItem);
-            if (countSelect < countProduct) {
+            if (countSelect <= countProduct) {
                 int idItem = getIdProduct(typeItem, codeItem);
                 if (!shoppingBagRepository.isExist(idUser, idItem, typeItem)) {
                     shoppingBagRepository.addItemToShoppingBag(idUser, idItem, countSelect, typeItem);
                     capacity++;
                 } else {
                     int countNew = shoppingBagRepository.getCount(idUser, idItem, typeItem) + countSelect;
-                    if (countNew < countProduct)
+                    if (countNew <= countProduct)
                         shoppingBagRepository.updateCountInShopping(idUser, idItem, countNew, typeItem);
                     else System.out.println("Not Enough available ");
                 }
@@ -56,7 +56,6 @@ public class ShoppingBagImpl implements shoppingBagService {
     }
     @Override
     public void deleteProductOfShoppingBag(String typeItem, String codeItem, User user) throws SQLException, NotFoundException {
-
         int idItem = getIdProduct(typeItem, codeItem);
         int idUser = userRepository.getIdByNameAndPassword(user.getName(), user.getPassword());
         if (idItem == 0) {
@@ -91,70 +90,61 @@ public class ShoppingBagImpl implements shoppingBagService {
     @Override
     public double printTotalPrice(User user) throws SQLException, NotFoundException {
         double totalPrice = 0;
-        List<Item> arrayList1 = new ArrayList<>();
+        List<Item> arrayList1;
         arrayList1 = printAllProductsShoppingBag(user);
         if (arrayList == null)
             throw new NotFoundException("list is empty");
-        else
-        {
-            for (int i = 0; i < arrayList1.size(); i++) {
-                totalPrice += arrayList1.get(i).getPrice() * arrayList1.get(i).getNumberSelect();
+        else {
+            for (Item item : arrayList1) {
+                totalPrice += item.getPrice() * item.getNumberSelect();
             }
             return totalPrice;
         }
     }
 
     @Override
-    public void isConfirmShoppingBag(User user) throws SQLException, NotFoundException {
+    public boolean isConfirmShoppingBag(User user) throws SQLException, NotFoundException {
         int userId = userRepository.getIdByNameAndPassword(user.getName(), user.getPassword());
-        if(basketRepository.isConfirm(userId)) {
+        if (basketRepository.isConfirm(userId)) {
             arrayList = printAllProductsShoppingBag(user);
             if (arrayList == null)
                 throw new NotFoundException("list is empty");
             else
-                for (int i = 0; i < arrayList.size(); i++) {
-                    int countTotal = arrayList.get(i).getCount();
-                    int countSelect = arrayList.get(i).getNumberSelect();
+                for (Item item : arrayList) {
+                    int countTotal = item.getCount();
+                    int countSelect = item.getNumberSelect();
                     countTotal = countTotal - countSelect;
-                    if (arrayList.get(i) instanceof Device)
-                        if (countTotal < 0)
-                            System.out.println(((Device) arrayList.get(i)).getDevicesType() + " -> Not Enough available");
-                        else
-                            deviceServiceImpl.updateStockItems((Device) arrayList.get(i), countTotal);
-                    else if (arrayList.get(i) instanceof Shoes)
-                        if (countTotal < 0)
-                            System.out.println(((Shoes) arrayList.get(i)).getShoesType() + " -> Not Enough available");
-                        else
-                            shoesServiceImpl.updateStockItems((Shoes) arrayList.get(i), countTotal);
-                    else if (arrayList.get(i) instanceof Reading)
-                        if (countTotal < 0)
-                            System.out.println(((Reading) arrayList.get(i)).getReadingType() + " -> Not Enough available");
-                        else
-                            readingServiceImpl.updateStockItems((Reading) arrayList.get(i), countTotal);
+                    if (item instanceof Device)
+                        deviceServiceImpl.updateStockItems((Device) item, countTotal);
+                    else if (item instanceof Shoes)
+                        shoesServiceImpl.updateStockItems((Shoes) item, countTotal);
+                    else if (item instanceof Reading)
+                        readingServiceImpl.updateStockItems((Reading) item, countTotal);
                 }
-        }
-        else System.out.println("your shopping is confirmed");
+            shoppingBagRepository.emptyShoppingBag(userId);
+            basketRepository.updateBasketForIsConfirm(userId);
+            return true;
+        } else
+            return false;
     }
 
     public int getIdProduct(String typeItem, String codeItem) throws SQLException {
-        int id = 0;
-        if (typeItem.equals("device"))
-            id = deviceServiceImpl.getIdItem(typeItem, codeItem);
-        else if (typeItem.equals("reading"))
-            id = readingServiceImpl.getIdItem(typeItem, codeItem);
-        else if (typeItem.equals("shoes"))
-            id = shoesServiceImpl.getIdItem(typeItem, codeItem);
+        int id = switch (typeItem) {
+            case "device" -> deviceServiceImpl.getIdItem(typeItem, codeItem);
+            case "reading" -> readingServiceImpl.getIdItem(typeItem, codeItem);
+            case "shoes" -> shoesServiceImpl.getIdItem(typeItem, codeItem);
+            default -> 0;
+        };
         return id;
     }
 
     private int getStockProducts(String typeItem, String codeItem) throws SQLException {
-        if (typeItem.equals("device"))
-            return deviceServiceImpl.getNumberAvailableItem(typeItem, codeItem);
-        else if (typeItem.equals("reading"))
-            return readingServiceImpl.getNumberAvailableItem(typeItem, codeItem);
-        else if (typeItem.equals("shoes"))
-            return shoesServiceImpl.getNumberAvailableItem(typeItem, codeItem);
-        return 0;
+        return switch (typeItem) {
+            case "device" -> deviceServiceImpl.getNumberAvailableItem(typeItem, codeItem);
+            case "reading" -> readingServiceImpl.getNumberAvailableItem(typeItem, codeItem);
+            case "shoes" -> shoesServiceImpl.getNumberAvailableItem(typeItem, codeItem);
+            default -> 0;
+        };
     }
 
 }

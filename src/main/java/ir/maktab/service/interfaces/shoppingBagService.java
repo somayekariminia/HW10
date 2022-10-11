@@ -15,6 +15,6 @@ public interface shoppingBagService {
 
     List<Item> printAllProductsShoppingBag(User user) throws SQLException, NotFoundException;
     double printTotalPrice(User user) throws SQLException, NotFoundException;
-    void  isConfirmShoppingBag(User user) throws SQLException, NotFoundException;
+    boolean  isConfirmShoppingBag(User user) throws SQLException, NotFoundException;
 
 }
